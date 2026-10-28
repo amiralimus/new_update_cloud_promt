@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+
+  <meta
+          name="description"
+          content="چغر - برنامه تمرینات ورزشی"
+  >
+
+  <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>چغر - Chegher</title>
+
+  <!-- =====================================================
+       CHEGHER FAVICON
+       ===================================================== -->
+
+  <link
+          rel="icon"
+          type="image/jpeg"
+          href="assets/logo1.jpg"
+  >
+
+  <link
+          rel="shortcut icon"
+          type="image/jpeg"
+          href="assets/logo1.jpg"
+  >
+
+  <!-- =====================================================
+       MOBILE / IOS
+       ===================================================== -->
+
+  <meta
+          name="mobile-web-app-capable"
+          content="yes"
+  >
+
+  <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black"
+  >
+
+  <meta
+          name="apple-mobile-web-app-title"
+          content="چغر"
+  >
+
+  <link
+          rel="apple-touch-icon"
+          href="assets/logo1.jpg"
+  >
+
+  <!-- =====================================================
+       MANIFEST
+       ===================================================== -->
+
+  <link
+          rel="manifest"
+          href="manifest.json"
+  >
+
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+
+      /* اجازه اسکرول طبیعی مرورگر */
+      overflow: auto;
+
+      /* اسکرول نرم */
+      scroll-behavior: smooth;
+
+      /* جلوگیری از رفتارهای عجیب اسکرول روی موبایل */
+      overscroll-behavior: auto;
+
+      /* بهبود تعامل لمسی */
+      touch-action: pan-x pan-y;
+    }
+
+    body {
+      background: #ffffff;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     FLUTTER
+     ===================================================== -->
+
+<script src="flutter_bootstrap.js" async></script>
+
+<!-- =====================================================
+     KEEP CHEGHER TITLE + FAVICON
+     ===================================================== -->
+
+<script>
+  (() => {
+    const TITLE = 'چغر - Chegher';
+    const FAVICON = 'assets/logo1.jpg';
+
+    function forceChegherIdentity() {
+      document.title = TITLE;
+
+      // حذف favicon های قبلی
+      const oldIcons = document.querySelectorAll(
+        'link[rel="icon"], link[rel="shortcut icon"]'
+      );
+
+      oldIcons.forEach((icon) => {
+        icon.remove();
+      });
+
+      // favicon اصلی چغر
+      const favicon = document.createElement('link');
+
+      favicon.rel = 'icon';
+      favicon.type = 'image/jpeg';
+      favicon.href = FAVICON;
+
+      document.head.appendChild(favicon);
+
+      // shortcut icon
+      const shortcut = document.createElement('link');
+
+      shortcut.rel = 'shortcut icon';
+      shortcut.type = 'image/jpeg';
+      shortcut.href = FAVICON;
+
+      document.head.appendChild(shortcut);
+    }
+
+    // اجرای اولیه
+    forceChegherIdentity();
+
+    /*
+     * Flutter ممکن است هنگام اجرای برنامه
+     * favicon یا title را تغییر دهد.
+     */
+    const observer = new MutationObserver(() => {
+      const icons = [
+        ...document.querySelectorAll(
+          'link[rel="icon"], link[rel="shortcut icon"]'
+        )
+      ];
+
+      const hasWrongIcon = icons.some((element) => {
+        return !element.href.includes('assets/logo1.jpg');
+      });
+
+      const titleIsWrong =
+        document.title !== TITLE;
+
+      if (hasWrongIcon || titleIsWrong) {
+        forceChegherIdentity();
+      }
+    });
+
+    observer.observe(document.head, {
+      childList: true,
+      subtree: true,
+      attributes: true
+    });
+
+    // وقتی کاربر دوباره به تب برمی‌گردد
+    document.addEventListener(
+      'visibilitychange',
+      () => {
+        if (!document.hidden) {
+          forceChegherIdentity();
+        }
+      }
+    );
+  })();
+</script>
+
+</body>
+</html>
